@@ -1,0 +1,544 @@
+{
+  "orchestration": {
+    "version": "1.0.0",
+    "project_type": "saas-generic",
+    "created_at": "2026-01-13",
+    "last_updated": "2026-01-13",
+
+    "agents": [
+      {
+        "id": "architect",
+        "name": "Architect Agent",
+        "file": ".github/agents/architect-agent.md",
+        "priority": 1,
+        "enabled": true,
+        "triggers": [
+          "architecture",
+          "design",
+          "system-design",
+          "technical-decisions"
+        ],
+        "outputs": ["architecture-docs", "technical-specs", "design-patterns"]
+      },
+      {
+        "id": "backend",
+        "name": "Backend Agent",
+        "file": ".github/agents/backend-agent.md",
+        "priority": 2,
+        "enabled": true,
+        "triggers": ["api", "business-logic", "server", "backend"],
+        "dependencies": ["architect", "database"],
+        "outputs": ["api-code", "business-logic", "controllers", "services"]
+      },
+      {
+        "id": "frontend",
+        "name": "Frontend Agent",
+        "file": ".github/agents/frontend-agent.md",
+        "priority": 2,
+        "enabled": true,
+        "triggers": ["ui", "ux", "components", "frontend", "client"],
+        "dependencies": ["architect", "backend"],
+        "outputs": ["ui-components", "pages", "state-management", "styles"]
+      },
+      {
+        "id": "database",
+        "name": "Database Agent",
+        "file": ".github/agents/database-agent.md",
+        "priority": 3,
+        "enabled": true,
+        "triggers": [
+          "database",
+          "schema",
+          "migrations",
+          "queries",
+          "data-model"
+        ],
+        "dependencies": ["architect"],
+        "outputs": ["migrations", "schemas", "queries", "seeders"]
+      },
+      {
+        "id": "devops",
+        "name": "DevOps Agent",
+        "file": ".github/agents/devops-agent.md",
+        "priority": 4,
+        "enabled": true,
+        "triggers": [
+          "deployment",
+          "ci-cd",
+          "infrastructure",
+          "docker",
+          "kubernetes"
+        ],
+        "dependencies": ["backend", "frontend"],
+        "outputs": ["ci-cd-config", "infrastructure-code", "deployment-scripts"]
+      },
+      {
+        "id": "security",
+        "name": "Security Agent",
+        "file": ".github/agents/security-agent.md",
+        "priority": 5,
+        "enabled": true,
+        "triggers": ["security", "vulnerabilities", "audit", "compliance"],
+        "dependencies": ["backend", "frontend", "database"],
+        "outputs": [
+          "security-reports",
+          "vulnerability-fixes",
+          "security-configs"
+        ]
+      },
+      {
+        "id": "testing",
+        "name": "Testing Agent",
+        "file": ".github/agents/testing-agent.md",
+        "priority": 6,
+        "enabled": true,
+        "triggers": ["test", "testing", "qa", "quality"],
+        "dependencies": ["backend", "frontend"],
+        "outputs": [
+          "unit-tests",
+          "integration-tests",
+          "e2e-tests",
+          "test-reports"
+        ]
+      },
+      {
+        "id": "documentation",
+        "name": "Documentation Agent",
+        "file": ".github/agents/documentation-agent.md",
+        "priority": 7,
+        "enabled": true,
+        "triggers": ["docs", "documentation", "readme", "api-docs"],
+        "dependencies": ["architect", "backend", "frontend"],
+        "outputs": [
+          "technical-docs",
+          "api-documentation",
+          "readme-files",
+          "guides"
+        ]
+      },
+      {
+        "id": "code-review",
+        "name": "Code Review Agent",
+        "file": ".github/agents/code-review-agent.md",
+        "priority": 8,
+        "enabled": true,
+        "triggers": ["review", "quality", "refactor", "code-quality"],
+        "dependencies": ["backend", "frontend"],
+        "outputs": ["review-reports", "refactor-suggestions", "quality-metrics"]
+      },
+      {
+        "id": "integration",
+        "name": "Integration Agent",
+        "file": ".github/agents/integration-agent.md",
+        "priority": 9,
+        "enabled": true,
+        "triggers": [
+          "integration",
+          "third-party",
+          "api-integration",
+          "webhooks"
+        ],
+        "dependencies": ["backend", "security"],
+        "outputs": ["integration-code", "webhook-handlers", "api-clients"]
+      }
+    ],
+
+    "workflows": {
+      "feature_development": {
+        "description": "Complete workflow for developing a new feature",
+        "steps": [
+          {
+            "step": 1,
+            "agent": "architect",
+            "action": "design_feature",
+            "validation": ["architecture_approved", "patterns_defined"],
+            "timeout_minutes": 30
+          },
+          {
+            "step": 2,
+            "agent": "database",
+            "action": "design_schema",
+            "validation": ["schema_valid", "migrations_ready"],
+            "timeout_minutes": 20,
+            "parallel": false
+          },
+          {
+            "step": 3,
+            "agents": ["backend", "frontend"],
+            "action": "implement_feature",
+            "validation": ["code_compiles", "no_errors"],
+            "timeout_minutes": 120,
+            "parallel": true
+          },
+          {
+            "step": 4,
+            "agent": "testing",
+            "action": "create_tests",
+            "validation": ["tests_pass", "coverage_threshold"],
+            "timeout_minutes": 60
+          },
+          {
+            "step": 5,
+            "agent": "security",
+            "action": "security_audit",
+            "validation": ["no_critical_vulnerabilities"],
+            "timeout_minutes": 30
+          },
+          {
+            "step": 6,
+            "agent": "code-review",
+            "action": "review_code",
+            "validation": ["quality_score_met", "no_critical_issues"],
+            "timeout_minutes": 20
+          },
+          {
+            "step": 7,
+            "agent": "documentation",
+            "action": "document_feature",
+            "validation": ["docs_complete", "api_docs_updated"],
+            "timeout_minutes": 30
+          },
+          {
+            "step": 8,
+            "agent": "devops",
+            "action": "prepare_deployment",
+            "validation": ["ci_passes", "deployment_ready"],
+            "timeout_minutes": 40
+          }
+        ],
+        "rollback_strategy": "automatic",
+        "notification_channels": ["slack", "email"]
+      },
+
+      "bug_fix": {
+        "description": "Workflow for fixing bugs",
+        "steps": [
+          {
+            "step": 1,
+            "agent": "testing",
+            "action": "reproduce_bug",
+            "validation": ["bug_reproduced", "test_case_created"],
+            "timeout_minutes": 20
+          },
+          {
+            "step": 2,
+            "agent": "architect",
+            "action": "analyze_root_cause",
+            "validation": ["root_cause_identified"],
+            "timeout_minutes": 15,
+            "optional": true
+          },
+          {
+            "step": 3,
+            "agents": ["backend", "frontend", "database"],
+            "action": "fix_bug",
+            "validation": ["fix_implemented", "code_compiles"],
+            "timeout_minutes": 60,
+            "parallel": false
+          },
+          {
+            "step": 4,
+            "agent": "testing",
+            "action": "verify_fix",
+            "validation": ["bug_test_passes", "no_regressions"],
+            "timeout_minutes": 30
+          },
+          {
+            "step": 5,
+            "agent": "code-review",
+            "action": "review_fix",
+            "validation": ["fix_approved"],
+            "timeout_minutes": 15
+          },
+          {
+            "step": 6,
+            "agent": "devops",
+            "action": "deploy_hotfix",
+            "validation": ["deployed_successfully"],
+            "timeout_minutes": 20,
+            "condition": "is_critical_bug"
+          }
+        ],
+        "priority": "high",
+        "auto_deploy": false
+      },
+
+      "refactor": {
+        "description": "Workflow for code refactoring",
+        "steps": [
+          {
+            "step": 1,
+            "agent": "architect",
+            "action": "propose_refactor",
+            "validation": ["refactor_plan_approved"],
+            "timeout_minutes": 30
+          },
+          {
+            "step": 2,
+            "agent": "code-review",
+            "action": "identify_refactor_areas",
+            "validation": ["areas_identified", "metrics_baseline"],
+            "timeout_minutes": 20
+          },
+          {
+            "step": 3,
+            "agents": ["backend", "frontend", "database"],
+            "action": "implement_refactor",
+            "validation": ["code_improved", "functionality_preserved"],
+            "timeout_minutes": 180,
+            "parallel": false
+          },
+          {
+            "step": 4,
+            "agent": "testing",
+            "action": "regression_testing",
+            "validation": ["all_tests_pass", "no_new_failures"],
+            "timeout_minutes": 45
+          },
+          {
+            "step": 5,
+            "agent": "code-review",
+            "action": "validate_improvements",
+            "validation": ["metrics_improved", "quality_increased"],
+            "timeout_minutes": 20
+          },
+          {
+            "step": 6,
+            "agent": "documentation",
+            "action": "update_docs",
+            "validation": ["docs_reflect_changes"],
+            "timeout_minutes": 30
+          }
+        ],
+        "requires_approval": true
+      },
+
+      "deployment": {
+        "description": "Production deployment workflow",
+        "steps": [
+          {
+            "step": 1,
+            "agent": "testing",
+            "action": "run_full_test_suite",
+            "validation": ["all_tests_pass", "coverage_met"],
+            "timeout_minutes": 60
+          },
+          {
+            "step": 2,
+            "agent": "security",
+            "action": "security_scan",
+            "validation": ["no_vulnerabilities", "compliance_met"],
+            "timeout_minutes": 30
+          },
+          {
+            "step": 3,
+            "agent": "code-review",
+            "action": "final_review",
+            "validation": ["code_quality_approved"],
+            "timeout_minutes": 20
+          },
+          {
+            "step": 4,
+            "agent": "devops",
+            "action": "build_artifacts",
+            "validation": ["build_successful", "artifacts_created"],
+            "timeout_minutes": 30
+          },
+          {
+            "step": 5,
+            "agent": "devops",
+            "action": "deploy_to_staging",
+            "validation": ["staging_healthy", "smoke_tests_pass"],
+            "timeout_minutes": 20
+          },
+          {
+            "step": 6,
+            "agent": "testing",
+            "action": "staging_verification",
+            "validation": ["e2e_tests_pass", "performance_acceptable"],
+            "timeout_minutes": 45
+          },
+          {
+            "step": 7,
+            "agent": "devops",
+            "action": "deploy_to_production",
+            "validation": ["deployment_successful", "health_checks_pass"],
+            "timeout_minutes": 30,
+            "requires_manual_approval": true
+          },
+          {
+            "step": 8,
+            "agent": "devops",
+            "action": "post_deployment_monitoring",
+            "validation": ["metrics_normal", "no_errors"],
+            "timeout_minutes": 30
+          }
+        ],
+        "rollback_on_failure": true,
+        "canary_deployment": true,
+        "canary_percentage": 10
+      }
+    },
+
+    "communication": {
+      "handoff_protocol": {
+        "format": "markdown",
+        "required_fields": [
+          "completed_by",
+          "timestamp",
+          "files_modified",
+          "dependencies_added",
+          "configurations_changed",
+          "next_steps",
+          "special_notes"
+        ],
+        "template_file": ".github/templates/handoff-template.md"
+      },
+      "shared_context": {
+        "location": "project-context.md",
+        "required_variables": [
+          "FRAMEWORK",
+          "BACKEND_STACK",
+          "DATABASE",
+          "CLOUD_PROVIDER",
+          "AUTH_METHOD",
+          "DEPLOYMENT_STRATEGY"
+        ],
+        "update_frequency": "on_change",
+        "validation_required": true
+      },
+      "notification_settings": {
+        "channels": {
+          "slack": {
+            "enabled": true,
+            "webhook_url": "{{SLACK_WEBHOOK_URL}}",
+            "channels": {
+              "general": "#dev-general",
+              "critical": "#dev-critical",
+              "deployments": "#deployments"
+            }
+          },
+          "email": {
+            "enabled": true,
+            "recipients": ["{{TEAM_EMAIL}}"],
+            "on_events": ["deployment", "critical_error", "security_issue"]
+          },
+          "github": {
+            "enabled": true,
+            "create_issues": true,
+            "labels": ["agent-orchestration", "automated"]
+          }
+        }
+      }
+    },
+
+    "validation": {
+      "checkpoints": {
+        "pre_commit": {
+          "enabled": true,
+          "checks": ["lint", "format", "type_check", "unit_tests", "no_secrets"]
+        },
+        "pre_push": {
+          "enabled": true,
+          "checks": ["all_tests", "build", "integration_tests"]
+        },
+        "pre_merge": {
+          "enabled": true,
+          "checks": [
+            "code_review_approved",
+            "ci_passing",
+            "coverage_threshold",
+            "security_scan_clean"
+          ]
+        },
+        "pre_deployment": {
+          "enabled": true,
+          "checks": [
+            "e2e_tests",
+            "performance_tests",
+            "security_audit",
+            "documentation_updated"
+          ]
+        }
+      },
+      "thresholds": {
+        "test_coverage": 80,
+        "code_quality_score": 75,
+        "performance_score": 90,
+        "security_score": 95
+      }
+    },
+
+    "automation": {
+      "auto_assign_agents": true,
+      "auto_create_branches": true,
+      "auto_run_tests": true,
+      "auto_deploy_staging": true,
+      "auto_deploy_production": false,
+      "auto_rollback": true,
+      "auto_documentation": true
+    },
+
+    "monitoring": {
+      "track_agent_performance": true,
+      "log_all_actions": true,
+      "metrics_collection": {
+        "enabled": true,
+        "metrics": [
+          "agent_execution_time",
+          "workflow_completion_time",
+          "success_rate",
+          "failure_rate",
+          "rollback_frequency"
+        ]
+      },
+      "alerting": {
+        "enabled": true,
+        "alert_on": [
+          "workflow_failure",
+          "timeout",
+          "validation_failure",
+          "security_issue"
+        ]
+      }
+    },
+
+    "integrations": {
+      "version_control": {
+        "platform": "{{REPOSITORY_HOST}}",
+        "auto_commit": false,
+        "commit_message_format": "conventional-commits"
+      },
+      "project_management": {
+        "platform": "{{PROJECT_MANAGEMENT_TOOL}}",
+        "auto_create_tasks": true,
+        "sync_status": true
+      },
+      "documentation": {
+        "platform": "{{DOCS_PLATFORM}}",
+        "auto_publish": true
+      }
+    },
+
+    "error_handling": {
+      "retry_policy": {
+        "max_retries": 3,
+        "backoff_strategy": "exponential",
+        "retry_on": ["timeout", "temporary_failure"]
+      },
+      "fallback_strategies": {
+        "agent_unavailable": "skip_and_notify",
+        "validation_failure": "halt_workflow",
+        "timeout": "retry_then_notify"
+      }
+    }
+  },
+
+  "metadata": {
+    "schema_version": "1.0.0",
+    "compatible_with": ["github-copilot", "custom-orchestration"],
+    "maintainer": "{{TECH_LEAD_NAME}}",
+    "documentation": "README.md",
+    "changelog": "CHANGELOG.md"
+  }
+}

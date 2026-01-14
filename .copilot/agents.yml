@@ -1,0 +1,656 @@
+# Agentes de Desarrollo - Configuración
+
+version: "1.0.0"
+created_at: "2026-01-13"
+
+# ============================================
+# DEFINICIÓN DE AGENTES
+# ============================================
+
+agents:
+  # ==========================================
+  # AGENTES CORE
+  # ==========================================
+
+  architect:
+    name: "Architect Agent"
+    role: "Software Architect"
+    description: "Diseña la arquitectura del sistema, toma decisiones técnicas y define patrones"
+    file: ".github/agents/architect-agent.md"
+    enabled: true
+    priority: 1
+
+    capabilities:
+      - "Diseño de arquitectura de sistemas"
+      - "Selección de tecnologías y frameworks"
+      - "Definición de patrones de diseño"
+      - "Decisiones técnicas críticas"
+      - "Escalabilidad y performance"
+      - "Documentación de arquitectura"
+
+    triggers:
+      - "architecture"
+      - "design"
+      - "system-design"
+      - "technical-decisions"
+      - "scalability"
+      - "patterns"
+
+    inputs:
+      - "Requerimientos de negocio"
+      - "Restricciones técnicas"
+      - "Objetivos de escalabilidad"
+      - "Presupuesto y recursos"
+
+    outputs:
+      - "Diagramas de arquitectura"
+      - "Especificaciones técnicas"
+      - "ADRs (Architecture Decision Records)"
+      - "Documentación de patrones"
+
+    dependencies: []
+
+    handoff_to:
+      - "backend"
+      - "frontend"
+      - "database"
+      - "devops"
+
+  # ------------------------------------------
+
+  backend:
+    name: "Backend Agent"
+    role: "Backend Developer"
+    description: "Desarrolla APIs, lógica de negocio y servicios del servidor"
+    file: ".github/agents/backend-agent.md"
+    enabled: true
+    priority: 2
+
+    capabilities:
+      - "Desarrollo de APIs REST/GraphQL"
+      - "Implementación de lógica de negocio"
+      - "Integración con bases de datos"
+      - "Autenticación y autorización"
+      - "Procesamiento de datos"
+      - "Optimización de performance"
+
+    triggers:
+      - "api"
+      - "backend"
+      - "server"
+      - "business-logic"
+      - "endpoint"
+      - "controller"
+      - "service"
+
+    inputs:
+      - "Especificaciones de arquitectura"
+      - "Modelos de datos"
+      - "Requerimientos funcionales"
+      - "APIs de terceros"
+
+    outputs:
+      - "Código de APIs"
+      - "Servicios de negocio"
+      - "Controladores y rutas"
+      - "Middleware"
+      - "Validaciones"
+
+    dependencies:
+      - "architect"
+      - "database"
+
+    handoff_to:
+      - "testing"
+      - "security"
+      - "documentation"
+
+  # ------------------------------------------
+
+  frontend:
+    name: "Frontend Agent"
+    role: "Frontend Developer"
+    description: "Desarrolla interfaces de usuario, componentes y experiencia del cliente"
+    file: ".github/agents/frontend-agent.md"
+    enabled: true
+    priority: 2
+
+    capabilities:
+      - "Desarrollo de componentes UI"
+      - "Gestión de estado de aplicación"
+      - "Integración con APIs"
+      - "Responsive design"
+      - "Optimización de rendering"
+      - "Accesibilidad (a11y)"
+
+    triggers:
+      - "ui"
+      - "ux"
+      - "frontend"
+      - "client"
+      - "component"
+      - "page"
+      - "interface"
+
+    inputs:
+      - "Diseños UI/UX"
+      - "Especificaciones de arquitectura"
+      - "Documentación de APIs"
+      - "Requerimientos de usuario"
+
+    outputs:
+      - "Componentes React/Vue/etc"
+      - "Páginas y vistas"
+      - "Estado de aplicación"
+      - "Estilos y themes"
+      - "Utilidades frontend"
+
+    dependencies:
+      - "architect"
+      - "backend"
+
+    handoff_to:
+      - "testing"
+      - "security"
+      - "documentation"
+
+  # ------------------------------------------
+
+  database:
+    name: "Database Agent"
+    role: "Database Engineer"
+    description: "Diseña esquemas, crea migraciones y optimiza queries"
+    file: ".github/agents/database-agent.md"
+    enabled: true
+    priority: 3
+
+    capabilities:
+      - "Diseño de esquemas de base de datos"
+      - "Creación de migraciones"
+      - "Optimización de queries"
+      - "Indexación estratégica"
+      - "Particionamiento de datos"
+      - "Backup y recuperación"
+
+    triggers:
+      - "database"
+      - "schema"
+      - "migration"
+      - "query"
+      - "data-model"
+      - "table"
+
+    inputs:
+      - "Requerimientos de datos"
+      - "Modelos de dominio"
+      - "Patrones de acceso"
+      - "Volumen esperado"
+
+    outputs:
+      - "Esquemas de base de datos"
+      - "Archivos de migración"
+      - "Queries optimizadas"
+      - "Scripts de seeding"
+      - "Índices y constraints"
+
+    dependencies:
+      - "architect"
+
+    handoff_to:
+      - "backend"
+      - "testing"
+
+  # ------------------------------------------
+
+  devops:
+    name: "DevOps Agent"
+    role: "DevOps Engineer"
+    description: "Gestiona CI/CD, infraestructura y deployments"
+    file: ".github/agents/devops-agent.md"
+    enabled: true
+    priority: 4
+
+    capabilities:
+      - "Configuración de CI/CD pipelines"
+      - "Gestión de infraestructura as code"
+      - "Containerización (Docker/Kubernetes)"
+      - "Automatización de deployments"
+      - "Monitoreo y logging"
+      - "Disaster recovery"
+
+    triggers:
+      - "deployment"
+      - "ci-cd"
+      - "infrastructure"
+      - "docker"
+      - "kubernetes"
+      - "pipeline"
+
+    inputs:
+      - "Código de aplicación"
+      - "Requerimientos de infraestructura"
+      - "Configuraciones de ambiente"
+      - "Políticas de deployment"
+
+    outputs:
+      - "Pipelines de CI/CD"
+      - "Dockerfiles y configs"
+      - "Scripts de deployment"
+      - "Configuraciones de infraestructura"
+      - "Manifiestos de Kubernetes"
+
+    dependencies:
+      - "backend"
+      - "frontend"
+      - "database"
+
+    handoff_to:
+      - "testing"
+      - "security"
+
+  # ------------------------------------------
+
+  security:
+    name: "Security Agent"
+    role: "Security Engineer"
+    description: "Audita seguridad, identifica vulnerabilidades y aplica best practices"
+    file: ".github/agents/security-agent.md"
+    enabled: true
+    priority: 5
+
+    capabilities:
+      - "Auditoría de seguridad"
+      - "Análisis de vulnerabilidades"
+      - "Implementación de controles de seguridad"
+      - "Gestión de secretos"
+      - "Compliance y regulaciones"
+      - "Pentesting automatizado"
+
+    triggers:
+      - "security"
+      - "vulnerability"
+      - "audit"
+      - "compliance"
+      - "penetration-test"
+
+    inputs:
+      - "Código de aplicación"
+      - "Configuraciones de infraestructura"
+      - "Dependencias y librerías"
+      - "Políticas de seguridad"
+
+    outputs:
+      - "Reportes de seguridad"
+      - "Fixes de vulnerabilidades"
+      - "Configuraciones de seguridad"
+      - "Políticas implementadas"
+      - "Documentación de compliance"
+
+    dependencies:
+      - "backend"
+      - "frontend"
+      - "database"
+      - "devops"
+
+    handoff_to:
+      - "code-review"
+      - "documentation"
+
+  # ------------------------------------------
+
+  testing:
+    name: "Testing Agent"
+    role: "QA Engineer"
+    description: "Crea y ejecuta tests unitarios, de integración y E2E"
+    file: ".github/agents/testing-agent.md"
+    enabled: true
+    priority: 6
+
+    capabilities:
+      - "Tests unitarios"
+      - "Tests de integración"
+      - "Tests end-to-end"
+      - "Performance testing"
+      - "Análisis de cobertura"
+      - "Test automation"
+
+    triggers:
+      - "test"
+      - "testing"
+      - "qa"
+      - "quality"
+      - "coverage"
+
+    inputs:
+      - "Código de aplicación"
+      - "Requerimientos funcionales"
+      - "Casos de uso"
+      - "APIs y endpoints"
+
+    outputs:
+      - "Suites de tests"
+      - "Reportes de cobertura"
+      - "Tests E2E automatizados"
+      - "Performance benchmarks"
+      - "Bug reports"
+
+    dependencies:
+      - "backend"
+      - "frontend"
+      - "database"
+
+    handoff_to:
+      - "code-review"
+      - "devops"
+
+  # ------------------------------------------
+
+  documentation:
+    name: "Documentation Agent"
+    role: "Technical Writer"
+    description: "Genera y mantiene documentación técnica, API docs y guías"
+    file: ".github/agents/documentation-agent.md"
+    enabled: true
+    priority: 7
+
+    capabilities:
+      - "Documentación de APIs"
+      - "README y guías"
+      - "Documentación técnica"
+      - "Diagramas y visualizaciones"
+      - "Changelogs"
+      - "Tutoriales y ejemplos"
+
+    triggers:
+      - "docs"
+      - "documentation"
+      - "readme"
+      - "api-docs"
+      - "guide"
+
+    inputs:
+      - "Código fuente"
+      - "Especificaciones"
+      - "Comentarios inline"
+      - "Decisiones de arquitectura"
+
+    outputs:
+      - "Documentación de APIs (OpenAPI/Swagger)"
+      - "README.md completos"
+      - "Guías de usuario"
+      - "Documentación técnica"
+      - "Diagramas de arquitectura"
+
+    dependencies:
+      - "architect"
+      - "backend"
+      - "frontend"
+
+    handoff_to:
+      - "code-review"
+
+  # ------------------------------------------
+
+  code-review:
+    name: "Code Review Agent"
+    role: "Code Reviewer"
+    description: "Revisa código, identifica issues de calidad y sugiere mejoras"
+    file: ".github/agents/code-review-agent.md"
+    enabled: true
+    priority: 8
+
+    capabilities:
+      - "Revisión de código"
+      - "Análisis de calidad"
+      - "Identificación de code smells"
+      - "Sugerencias de refactoring"
+      - "Verificación de estándares"
+      - "Métricas de complejidad"
+
+    triggers:
+      - "review"
+      - "code-review"
+      - "quality"
+      - "refactor"
+      - "standards"
+
+    inputs:
+      - "Pull requests"
+      - "Código modificado"
+      - "Estándares del proyecto"
+      - "Métricas anteriores"
+
+    outputs:
+      - "Reportes de revisión"
+      - "Sugerencias de mejora"
+      - "Métricas de calidad"
+      - "Checklist de estándares"
+      - "Priorización de refactors"
+
+    dependencies:
+      - "backend"
+      - "frontend"
+      - "testing"
+
+    handoff_to:
+      - "devops"
+      - "documentation"
+
+  # ==========================================
+  # AGENTES AUXILIARES
+  # ==========================================
+
+  integration:
+    name: "Integration Agent"
+    role: "Integration Specialist"
+    description: "Gestiona integraciones con APIs de terceros y webhooks"
+    file: ".github/agents/integration-agent.md"
+    enabled: true
+    priority: 9
+
+    capabilities:
+      - "Integración con APIs externas"
+      - "Gestión de webhooks"
+      - "Autenticación OAuth"
+      - "Rate limiting y retry logic"
+      - "Transformación de datos"
+      - "Monitoreo de integraciones"
+
+    triggers:
+      - "integration"
+      - "third-party"
+      - "api-integration"
+      - "webhook"
+      - "external-api"
+
+    inputs:
+      - "Documentación de APIs externas"
+      - "Requerimientos de integración"
+      - "Credenciales y secrets"
+      - "Casos de uso"
+
+    outputs:
+      - "Clientes de APIs"
+      - "Handlers de webhooks"
+      - "Mappers de datos"
+      - "Configuraciones de integración"
+      - "Monitoreo de salud"
+
+    dependencies:
+      - "backend"
+      - "security"
+
+    handoff_to:
+      - "testing"
+      - "documentation"
+
+# ============================================
+# CONFIGURACIÓN DE WORKFLOWS
+# ============================================
+
+workflows:
+  - name: "feature_development"
+    description: "Desarrollo completo de nueva funcionalidad"
+    sequence:
+      - architect
+      - database
+      - backend
+      - frontend
+      - testing
+      - security
+      - code-review
+      - documentation
+      - devops
+
+  - name: "bug_fix"
+    description: "Corrección de bugs"
+    sequence:
+      - testing
+      - "[backend|frontend|database]" # Conditional
+      - testing
+      - code-review
+      - devops
+
+  - name: "refactor"
+    description: "Refactorización de código"
+    sequence:
+      - architect
+      - code-review
+      - "[backend|frontend]"
+      - testing
+      - documentation
+
+  - name: "deployment"
+    description: "Deployment a producción"
+    sequence:
+      - testing
+      - security
+      - code-review
+      - devops
+
+# ============================================
+# REGLAS DE ORQUESTACIÓN
+# ============================================
+
+orchestration_rules:
+  # Prioridad de ejecución
+  execution_priority:
+    - architect # Siempre primero
+    - database # Antes que backend
+    - backend # Antes que frontend (APIs primero)
+    - frontend # Después de backend
+    - testing # Después de implementación
+    - security # Auditar después de tests
+    - code-review # Revisar antes de deploy
+    - documentation # Documentar antes de deploy
+    - devops # Deploy al final
+
+  # Agentes que pueden correr en paralelo
+  parallel_execution:
+    - [backend, frontend] # Pueden trabajar simultáneamente
+    - [testing, documentation]
+
+  # Agentes que bloquean el workflow si fallan
+  blocking_agents:
+    - security # No deploy con vulnerabilidades
+    - testing # No deploy con tests fallando
+    - code-review # No deploy sin aprobación
+
+  # Validaciones requeridas
+  required_validations:
+    - name: "tests_pass"
+      agent: "testing"
+      threshold: 100
+    - name: "coverage"
+      agent: "testing"
+      threshold: 80
+    - name: "security_score"
+      agent: "security"
+      threshold: 95
+    - name: "quality_score"
+      agent: "code-review"
+      threshold: 75
+
+# ============================================
+# CONFIGURACIÓN DE COMUNICACIÓN
+# ============================================
+
+communication:
+  handoff_template: |
+    ## Handoff to {{next_agent}}
+
+    **Completed by**: {{current_agent}}
+    **Date**: {{timestamp}}
+    **Duration**: {{duration_minutes}} minutes
+
+    ### Changes Made
+    {{changes_summary}}
+
+    ### Files Modified
+    {{files_list}}
+
+    ### Dependencies Added
+    {{dependencies_list}}
+
+    ### Configurations Changed
+    {{config_changes}}
+
+    ### Next Steps
+    {{next_steps}}
+
+    ### Special Notes
+    {{special_notes}}
+
+    ### Validation Results
+    - [ ] Code compiles
+    - [ ] Tests pass
+    - [ ] Linter clean
+    - [ ] Documentation updated
+    - [ ] No secrets exposed
+
+  notification_channels:
+    - slack
+    - email
+    - github_comments
+
+# ============================================
+# MÉTRICAS Y MONITOREO
+# ============================================
+
+metrics:
+  track:
+    - agent_execution_time
+    - workflow_completion_time
+    - success_rate
+    - failure_rate
+    - handoff_quality
+    - validation_pass_rate
+
+  dashboards:
+    - name: "Agent Performance"
+      url: "{{DASHBOARD_URL}}/agent-performance"
+    - name: "Workflow Analytics"
+      url: "{{DASHBOARD_URL}}/workflows"
+
+  alerts:
+    - condition: "agent_failure"
+      severity: "high"
+      notify: ["slack", "email"]
+    - condition: "workflow_timeout"
+      severity: "medium"
+      notify: ["slack"]
+    - condition: "validation_failure"
+      severity: "high"
+      notify: ["slack", "github"]
+
+# ============================================
+# METADATA
+# ============================================
+
+metadata:
+  version: "1.0.0"
+  schema_version: "1.0.0"
+  last_updated: "2026-01-13"
+  maintainer: "{{TECH_LEAD_NAME}}"
+  repository: "{{REPOSITORY_URL}}"
+  documentation: "README.md"
