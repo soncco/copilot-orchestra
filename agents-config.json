@@ -377,6 +377,335 @@
         "rollback_on_failure": true,
         "canary_deployment": true,
         "canary_percentage": 10
+      },
+
+      "monolith_to_spa_migration": {
+        "description": "Migration from Django monolith (templates + embedded React) to separated backend API + SPA frontend",
+        "phases": {
+          "phase_1_analysis": {
+            "description": "Analyze current monolith structure",
+            "steps": [
+              {
+                "step": 1,
+                "agent": "architect",
+                "action": "analyze_monolith_architecture",
+                "validation": [
+                  "architecture_documented",
+                  "migration_plan_created"
+                ],
+                "timeout_minutes": 60,
+                "outputs": [
+                  "current_architecture_diagram",
+                  "target_architecture_diagram",
+                  "migration_adr",
+                  "risk_assessment"
+                ]
+              },
+              {
+                "step": 2,
+                "agent": "backend",
+                "action": "inventory_django_views",
+                "validation": ["all_views_documented", "url_mapping_created"],
+                "timeout_minutes": 45,
+                "outputs": ["views_inventory.md", "url_to_api_mapping.md"]
+              },
+              {
+                "step": 3,
+                "agent": "frontend",
+                "action": "inventory_templates_and_react",
+                "validation": [
+                  "templates_cataloged",
+                  "react_components_listed"
+                ],
+                "timeout_minutes": 45,
+                "outputs": [
+                  "templates_inventory.md",
+                  "react_components_inventory.md",
+                  "static_assets_list.md"
+                ]
+              },
+              {
+                "step": 4,
+                "agent": "database",
+                "action": "document_current_models",
+                "validation": ["models_documented", "relationships_mapped"],
+                "timeout_minutes": 30,
+                "outputs": [
+                  "database_schema_current.md",
+                  "models_documentation.md"
+                ]
+              }
+            ]
+          },
+          "phase_2_backend_api": {
+            "description": "Convert Django views to REST API",
+            "steps": [
+              {
+                "step": 1,
+                "agent": "backend",
+                "action": "setup_drf_structure",
+                "validation": ["drf_installed", "api_structure_created"],
+                "timeout_minutes": 30,
+                "outputs": [
+                  "api/serializers.py",
+                  "api/viewsets.py",
+                  "api/urls.py",
+                  "api/permissions.py"
+                ]
+              },
+              {
+                "step": 2,
+                "agent": "backend",
+                "action": "convert_views_to_api_endpoints",
+                "validation": ["endpoints_functional", "serializers_created"],
+                "timeout_minutes": 180,
+                "parallel": false,
+                "outputs": ["api_endpoints_code", "openapi_spec"]
+              },
+              {
+                "step": 3,
+                "agent": "security",
+                "action": "implement_api_authentication",
+                "validation": ["jwt_configured", "cors_configured"],
+                "timeout_minutes": 60,
+                "outputs": [
+                  "jwt_authentication.py",
+                  "cors_settings.py",
+                  "api_permissions.py"
+                ]
+              },
+              {
+                "step": 4,
+                "agent": "backend",
+                "action": "add_api_pagination_filtering",
+                "validation": ["pagination_working", "filtering_working"],
+                "timeout_minutes": 45,
+                "outputs": ["pagination_classes.py", "filter_backends.py"]
+              },
+              {
+                "step": 5,
+                "agent": "testing",
+                "action": "create_api_tests",
+                "validation": ["api_tests_passing", "coverage_threshold"],
+                "timeout_minutes": 90,
+                "outputs": [
+                  "api/tests/test_endpoints.py",
+                  "api/tests/test_permissions.py"
+                ]
+              }
+            ]
+          },
+          "phase_3_frontend_spa": {
+            "description": "Create new SPA frontend with Quasar/Vue",
+            "steps": [
+              {
+                "step": 1,
+                "agent": "frontend",
+                "action": "setup_quasar_project",
+                "validation": ["project_initialized", "structure_created"],
+                "timeout_minutes": 20,
+                "outputs": [
+                  "frontend/quasar.config.js",
+                  "frontend/src/layouts/",
+                  "frontend/src/pages/"
+                ]
+              },
+              {
+                "step": 2,
+                "agent": "frontend",
+                "action": "setup_api_client",
+                "validation": ["axios_configured", "interceptors_ready"],
+                "timeout_minutes": 30,
+                "outputs": [
+                  "frontend/src/services/api.ts",
+                  "frontend/src/services/auth.ts"
+                ]
+              },
+              {
+                "step": 3,
+                "agent": "frontend",
+                "action": "migrate_templates_to_vue_components",
+                "validation": ["components_functional", "routing_configured"],
+                "timeout_minutes": 240,
+                "parallel": false,
+                "priority_order": [
+                  "auth_pages",
+                  "dashboard",
+                  "crud_pages",
+                  "complex_features"
+                ],
+                "outputs": [
+                  "frontend/src/components/",
+                  "frontend/src/pages/",
+                  "frontend/src/router/"
+                ]
+              },
+              {
+                "step": 4,
+                "agent": "frontend",
+                "action": "implement_state_management",
+                "validation": ["pinia_configured", "stores_working"],
+                "timeout_minutes": 60,
+                "outputs": [
+                  "frontend/src/stores/auth.ts",
+                  "frontend/src/stores/user.ts",
+                  "frontend/src/stores/[entity].ts"
+                ]
+              },
+              {
+                "step": 5,
+                "agent": "frontend",
+                "action": "integrate_react_components_as_vue",
+                "validation": [
+                  "components_migrated",
+                  "functionality_preserved"
+                ],
+                "timeout_minutes": 120,
+                "outputs": ["frontend/src/components/migrated/"]
+              }
+            ]
+          },
+          "phase_4_parallel_deployment": {
+            "description": "Deploy both systems in parallel",
+            "steps": [
+              {
+                "step": 1,
+                "agent": "devops",
+                "action": "setup_dual_deployment",
+                "validation": ["both_apps_accessible", "routing_configured"],
+                "timeout_minutes": 60,
+                "outputs": ["docker-compose.dual.yml", "nginx.dual.conf"]
+              },
+              {
+                "step": 2,
+                "agent": "backend",
+                "action": "maintain_legacy_views_temporarily",
+                "validation": ["legacy_still_works", "api_coexists"],
+                "timeout_minutes": 30,
+                "outputs": ["legacy_urls.py", "dual_mode_settings.py"]
+              },
+              {
+                "step": 3,
+                "agent": "testing",
+                "action": "parallel_testing",
+                "validation": [
+                  "both_versions_tested",
+                  "feature_parity_confirmed"
+                ],
+                "timeout_minutes": 90,
+                "outputs": ["tests/e2e/legacy_vs_spa.spec.ts"]
+              },
+              {
+                "step": 4,
+                "agent": "devops",
+                "action": "implement_feature_flags",
+                "validation": ["flags_working", "gradual_rollout_ready"],
+                "timeout_minutes": 45,
+                "outputs": [
+                  "feature_flags.py",
+                  "frontend/src/utils/features.ts"
+                ]
+              }
+            ]
+          },
+          "phase_5_cutover": {
+            "description": "Gradual migration from monolith to SPA",
+            "steps": [
+              {
+                "step": 1,
+                "agent": "devops",
+                "action": "route_percentage_to_spa",
+                "validation": ["routing_working", "metrics_healthy"],
+                "timeout_minutes": 30,
+                "canary_percentage": [10, 25, 50, 75, 100],
+                "outputs": ["nginx_percentage_routing.conf"]
+              },
+              {
+                "step": 2,
+                "agent": "testing",
+                "action": "monitor_user_experience",
+                "validation": ["no_error_increase", "performance_acceptable"],
+                "timeout_minutes": 120,
+                "continuous": true,
+                "outputs": ["monitoring_dashboard_config"]
+              },
+              {
+                "step": 3,
+                "agent": "backend",
+                "action": "deprecate_template_views",
+                "validation": ["views_marked_deprecated", "warnings_added"],
+                "timeout_minutes": 30,
+                "outputs": ["deprecated_views.py"]
+              },
+              {
+                "step": 4,
+                "agent": "documentation",
+                "action": "update_all_documentation",
+                "validation": ["docs_reflect_new_architecture"],
+                "timeout_minutes": 60,
+                "outputs": ["docs/api/", "docs/frontend/", "MIGRATION_GUIDE.md"]
+              }
+            ]
+          },
+          "phase_6_cleanup": {
+            "description": "Remove legacy code and finalize migration",
+            "steps": [
+              {
+                "step": 1,
+                "agent": "backend",
+                "action": "remove_template_views",
+                "validation": ["templates_removed", "only_api_remains"],
+                "timeout_minutes": 45,
+                "requires_approval": true,
+                "outputs": ["cleaned_urls.py", "removed_files_list.md"]
+              },
+              {
+                "step": 2,
+                "agent": "backend",
+                "action": "remove_template_dependencies",
+                "validation": ["unused_packages_removed", "settings_cleaned"],
+                "timeout_minutes": 30,
+                "outputs": ["requirements_cleaned.txt", "settings_api_only.py"]
+              },
+              {
+                "step": 3,
+                "agent": "devops",
+                "action": "simplify_deployment",
+                "validation": [
+                  "single_deployment_pipeline",
+                  "infrastructure_optimized"
+                ],
+                "timeout_minutes": 60,
+                "outputs": [
+                  "docker-compose.yml",
+                  "nginx.conf",
+                  ".github/workflows/deploy.yml"
+                ]
+              },
+              {
+                "step": 4,
+                "agent": "documentation",
+                "action": "finalize_migration_documentation",
+                "validation": [
+                  "migration_documented",
+                  "lessons_learned_captured"
+                ],
+                "timeout_minutes": 45,
+                "outputs": ["MIGRATION_COMPLETE.md", "ARCHITECTURE.md"]
+              }
+            ]
+          }
+        },
+        "rollback_strategy": "phase_by_phase",
+        "estimated_duration_weeks": 12,
+        "requires_approval_per_phase": true,
+        "success_criteria": [
+          "zero_downtime_migration",
+          "feature_parity_achieved",
+          "performance_improved_or_maintained",
+          "user_experience_maintained",
+          "legacy_code_removed"
+        ]
       }
     },
 
