@@ -6,13 +6,15 @@
 
 ## 🎯 Información del Proyecto
 
+El archivo informacion.md contiene en grandes rasgos los requisitos del sistema.
+
 ### Identificación
 
-- **Nombre del Proyecto**: `{{PROJECT_NAME}}`
-- **Versión**: `{{PROJECT_VERSION}}`
+- **Nombre del Proyecto**: TravesIA
+- **Versión**: 1.0
 - **Tipo**: SaaS Application
-- **Fecha de Inicio**: `{{START_DATE}}`
-- **Equipo**: `{{TEAM_NAME}}`
+- **Fecha de Inicio**: 20/01/2026
+- **Equipo**: Innovación
 
 ---
 
@@ -21,104 +23,61 @@
 ### Frontend
 
 ```yaml
-FRAMEWORK: "{{FRAMEWORK}}"
+FRAMEWORK: Vue 3 + Quasar 2
 # Opciones: React, Vue, Angular, Svelte, Next.js, Nuxt, SolidJS, Qwik
-
-UI_LIBRARY: "{{UI_LIBRARY}}"
-# Opciones: Material-UI, Ant Design, Chakra UI, Tailwind CSS, Bootstrap, Shadcn/UI
-
-STATE_MANAGEMENT: "{{STATE_MANAGEMENT}}"
-# Opciones: Redux, Zustand, MobX, Recoil, Jotai, Context API, Pinia (Vue)
-
-STYLING_APPROACH: "{{STYLING_APPROACH}}"
-# Opciones: CSS Modules, Styled Components, Emotion, Tailwind, SASS, CSS-in-JS
-
-BUILD_TOOL: "{{BUILD_TOOL}}"
-# Opciones: Vite, Webpack, Turbopack, esbuild, Parcel, Rollup
 ```
 
 ### Backend
 
 ```yaml
-BACKEND_STACK: "{{BACKEND_STACK}}"
+BACKEND_STACK: Python
 # Opciones: Node.js, Python, Java, Go, Rust, PHP, Ruby, C#/.NET
 
-BACKEND_FRAMEWORK: "{{BACKEND_FRAMEWORK}}"
+BACKEND_FRAMEWORK: Django
 # Node: Express, Fastify, NestJS, Koa, Hono
 # Python: FastAPI, Django, Flask, Starlette
 # Java: Spring Boot, Quarkus, Micronaut
 # Go: Gin, Echo, Fiber, Chi
 
-API_PATTERN: "{{API_PATTERN}}"
+API_PATTERN: REST
 # Opciones: REST, GraphQL, gRPC, tRPC, WebSocket
 
-API_VERSION: "{{API_VERSION}}"
+API_VERSION: v1
 # Ejemplo: v1, v2, etc.
 ```
 
 ### Base de Datos
 
 ```yaml
-DATABASE: "{{DATABASE}}"
+DATABASE: PostgreSQL
 # Opciones: PostgreSQL, MySQL, MongoDB, Redis, CockroachDB, Cassandra
 
-DATABASE_ORM: "{{DATABASE_ORM}}"
+DATABASE_ORM: Django ORM
 # Opciones: Prisma, TypeORM, Sequelize, Drizzle, SQLAlchemy, GORM, Hibernate
 
-CACHE_LAYER: "{{CACHE_LAYER}}"
+CACHE_LAYER: Redis
 # Opciones: Redis, Memcached, DynamoDB, in-memory
-
-SEARCH_ENGINE: "{{SEARCH_ENGINE}}"
-# Opciones: Elasticsearch, Algolia, MeiliSearch, Typesense, none
 ```
 
 ---
 
 ## ☁️ Infraestructura y DevOps
 
-### Cloud Provider
-
-```yaml
-CLOUD_PROVIDER: "{{CLOUD_PROVIDER}}"
-# Opciones: AWS, GCP, Azure, DigitalOcean, Vercel, Netlify, Railway, Fly.io
-
-REGION: "{{REGION}}"
-# Ejemplo: us-east-1, eu-west-1, etc.
-
-CDN: "{{CDN}}"
-# Opciones: CloudFront, Cloudflare, Fastly, Akamai, none
-```
-
 ### Deployment
 
 ```yaml
-DEPLOYMENT_STRATEGY: "{{DEPLOYMENT_STRATEGY}}"
+DEPLOYMENT_STRATEGY: Docker
 # Opciones: Docker, Kubernetes, Serverless, VM-based, Platform-as-Service
 
-CONTAINER_REGISTRY: "{{CONTAINER_REGISTRY}}"
+CONTAINER_REGISTRY: Docker
 # Opciones: Docker Hub, ECR, GCR, ACR, GitHub Container Registry
-
-ORCHESTRATION: "{{ORCHESTRATION}}"
-# Opciones: Kubernetes, Docker Swarm, ECS, Cloud Run, none
-
-CI_CD_PLATFORM: "{{CI_CD_PLATFORM}}"
-# Opciones: GitHub Actions, GitLab CI, CircleCI, Jenkins, Travis CI, Bitbucket Pipelines
 ```
 
 ### Monitoring y Observability
 
 ```yaml
-LOGGING: "{{LOGGING}}"
+LOGGING: Django Logging
 # Opciones: CloudWatch, Stackdriver, ELK Stack, Loki, Datadog
-
-MONITORING: "{{MONITORING}}"
-# Opciones: Prometheus + Grafana, Datadog, New Relic, Dynatrace, AppDynamics
-
-APM: "{{APM}}"
-# Opciones: Sentry, Bugsnag, Rollbar, New Relic, DataDog APM
-
-TRACING: "{{TRACING}}"
-# Opciones: Jaeger, Zipkin, OpenTelemetry, AWS X-Ray
 ```
 
 ---
@@ -128,103 +87,18 @@ TRACING: "{{TRACING}}"
 ### Autenticación
 
 ```yaml
-AUTH_METHOD: "{{AUTH_METHOD}}"
+AUTH_METHOD: JWT
 # Opciones: JWT, OAuth2, Session-based, Auth0, Clerk, Supabase Auth, Firebase Auth
 
-AUTH_PROVIDER: "{{AUTH_PROVIDER}}"
-# Opciones: Custom, Auth0, Clerk, Supabase, Firebase, Okta, AWS Cognito
-
-SESSION_STORAGE: "{{SESSION_STORAGE}}"
-# Opciones: Redis, Database, Memory, JWT (stateless)
-
-MFA_ENABLED: "{{MFA_ENABLED}}"
+MFA_ENABLED: true
 # Opciones: true, false
-```
-
-### Security Tools
-
-```yaml
-SECRETS_MANAGEMENT: "{{SECRETS_MANAGEMENT}}"
-# Opciones: AWS Secrets Manager, GCP Secret Manager, HashiCorp Vault, Doppler
-
-SSL_PROVIDER: "{{SSL_PROVIDER}}"
-# Opciones: Let's Encrypt, AWS ACM, Cloudflare, DigiCert
-
-WAF: "{{WAF}}"
-# Opciones: AWS WAF, Cloudflare WAF, Imperva, none
-```
-
----
-
-## 📧 Servicios Externos e Integraciones
-
-### Comunicaciones
-
-```yaml
-EMAIL_SERVICE: "{{EMAIL_SERVICE}}"
-# Opciones: SendGrid, AWS SES, Mailgun, Postmark, Resend, SMTP
-
-SMS_SERVICE: "{{SMS_SERVICE}}"
-# Opciones: Twilio, AWS SNS, Vonage, MessageBird, none
-
-NOTIFICATION_SERVICE: "{{NOTIFICATION_SERVICE}}"
-# Opciones: Firebase Cloud Messaging, OneSignal, Pusher, Socket.io
-```
-
-### Pagos y Facturación
-
-```yaml
-PAYMENT_PROVIDER: "{{PAYMENT_PROVIDER}}"
-# Opciones: Stripe, PayPal, Square, Braintree, Adyen, none
-
-SUBSCRIPTION_MANAGEMENT: "{{SUBSCRIPTION_MANAGEMENT}}"
-# Opciones: Stripe Billing, Chargebee, Recurly, Paddle
 ```
 
 ### Storage
 
 ```yaml
-FILE_STORAGE: "{{FILE_STORAGE}}"
+FILE_STORAGE: S3
 # Opciones: S3, GCS, Azure Blob Storage, Cloudinary, DigitalOcean Spaces
-
-MEDIA_PROCESSING: "{{MEDIA_PROCESSING}}"
-# Opciones: Cloudinary, Imgix, ImageKit, AWS MediaConvert, none
-```
-
----
-
-## 🧪 Testing y Calidad
-
-### Testing Framework
-
-```yaml
-UNIT_TEST_FRAMEWORK: "{{UNIT_TEST_FRAMEWORK}}"
-# Opciones: Jest, Vitest, Mocha, Pytest, JUnit, Go Test
-
-E2E_TEST_FRAMEWORK: "{{E2E_TEST_FRAMEWORK}}"
-# Opciones: Playwright, Cypress, Selenium, Puppeteer, TestCafe
-
-API_TEST_FRAMEWORK: "{{API_TEST_FRAMEWORK}}"
-# Opciones: Supertest, Postman, REST Assured, Insomnia
-
-COVERAGE_TOOL: "{{COVERAGE_TOOL}}"
-# Opciones: Istanbul, c8, Coverage.py, JaCoCo
-```
-
-### Code Quality
-
-```yaml
-LINTER: "{{LINTER}}"
-# Opciones: ESLint, Pylint, Flake8, Golangci-lint, RuboCop
-
-FORMATTER: "{{FORMATTER}}"
-# Opciones: Prettier, Black, gofmt, rustfmt, StandardJS
-
-TYPE_CHECKER: "{{TYPE_CHECKER}}"
-# Opciones: TypeScript, Flow, MyPy, none
-
-CODE_REVIEW_TOOL: "{{CODE_REVIEW_TOOL}}"
-# Opciones: SonarQube, CodeClimate, Codacy, DeepSource
 ```
 
 ---
@@ -234,80 +108,30 @@ CODE_REVIEW_TOOL: "{{CODE_REVIEW_TOOL}}"
 ### Entornos Disponibles
 
 ```yaml
-ENVIRONMENTS:
-  - development
-  - staging
-  - production
-  - testing (opcional)
 
-BRANCH_STRATEGY: "{{BRANCH_STRATEGY}}"
-# Opciones: Git Flow, GitHub Flow, Trunk-based, GitLab Flow
 ```
 
 ### URLs Base
 
 ```yaml
-DEVELOPMENT_URL: "http://localhost:{{DEV_PORT}}"
-STAGING_URL: "{{STAGING_URL}}"
-PRODUCTION_URL: "{{PRODUCTION_URL}}"
-API_BASE_URL: "{{API_BASE_URL}}"
+DEVELOPMENT_BACKEND_URL: "http://localhost:8000"
+DEVELOPMENT_FRONTEND_URL: "http://localhost:3000"
 ```
 
 ---
-
-## 📊 Analytics y Business Intelligence
-
-```yaml
-ANALYTICS: "{{ANALYTICS}}"
-# Opciones: Google Analytics, Mixpanel, Amplitude, Plausible, PostHog
-
-PRODUCT_ANALYTICS: "{{PRODUCT_ANALYTICS}}"
-# Opciones: Mixpanel, Amplitude, PostHog, Heap
-
-ERROR_TRACKING: "{{ERROR_TRACKING}}"
-# Opciones: Sentry, Bugsnag, Rollbar, LogRocket
-```
-
----
-
-## 🔧 Herramientas de Desarrollo
-
-### Package Managers
-
-```yaml
-PACKAGE_MANAGER: "{{PACKAGE_MANAGER}}"
-# Opciones: npm, yarn, pnpm, bun (Node); pip, poetry (Python); maven, gradle (Java)
-
-MONO_REPO_TOOL: "{{MONO_REPO_TOOL}}"
-# Opciones: Turborepo, Nx, Lerna, Rush, none
-```
 
 ### Development Tools
 
 ```yaml
-API_DOCUMENTATION: "{{API_DOCUMENTATION}}"
+API_DOCUMENTATION: Swagger/OpenAPI
 # Opciones: Swagger/OpenAPI, Postman, Stoplight, Redoc
 
-DATABASE_GUI: "{{DATABASE_GUI}}"
-# Opciones: pgAdmin, MongoDB Compass, DBeaver, TablePlus, Prisma Studio
+DATABASE_GUI: pgAdmin
+# Opciones: pgAdmin, DBeaver, TablePlus, DataGrip
+# pgAdmin disponible en: http://localhost:5050
 
-LOCAL_DEV_ENVIRONMENT: "{{LOCAL_DEV_ENVIRONMENT}}"
+LOCAL_DEV_ENVIRONMENT: Docker Compose
 # Opciones: Docker Compose, Kubernetes (kind/minikube), Native, Devcontainers
-```
-
----
-
-## 🎨 Convenciones del Proyecto
-
-### Naming Conventions
-
-```yaml
-FILE_NAMING: "{{FILE_NAMING}}"
-# Opciones: kebab-case, camelCase, PascalCase, snake_case
-
-COMPONENT_NAMING: "PascalCase"
-FUNCTION_NAMING: "camelCase"
-CONSTANT_NAMING: "UPPER_SNAKE_CASE"
 ```
 
 ### Commit Convention
@@ -315,9 +139,6 @@ CONSTANT_NAMING: "UPPER_SNAKE_CASE"
 ```yaml
 COMMIT_STANDARD: "Conventional Commits"
 # feat:, fix:, docs:, style:, refactor:, test:, chore:
-
-CHANGELOG_GENERATOR: "{{CHANGELOG_GENERATOR}}"
-# Opciones: standard-version, semantic-release, conventional-changelog
 ```
 
 ---
@@ -344,12 +165,6 @@ Lista de agentes habilitados para este proyecto:
 ```yaml
 DEFAULT_WORKFLOW: "feature_development"
 # Opciones: feature_development, bug_fix, refactor, deployment
-
-AUTO_DEPLOY_ENABLED: "{{AUTO_DEPLOY_ENABLED}}"
-# Opciones: true, false
-
-REVIEW_REQUIRED: "{{REVIEW_REQUIRED}}"
-# Opciones: true, false
 ```
 
 ---
@@ -361,11 +176,8 @@ VERSION_CONTROL: "Git"
 REPOSITORY_HOST: "{{REPOSITORY_HOST}}"
 # Opciones: GitHub, GitLab, Bitbucket, Azure DevOps
 
-MAIN_BRANCH: "{{MAIN_BRANCH}}"
+MAIN_BRANCH: main
 # Opciones: main, master, production
-
-DEVELOPMENT_BRANCH: "{{DEVELOPMENT_BRANCH}}"
-# Opciones: develop, dev, development
 ```
 
 ---

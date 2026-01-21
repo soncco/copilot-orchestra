@@ -9,21 +9,18 @@ El Frontend Agent es responsable de crear interfaces de usuario intuitivas, resp
 ### Responsabilidades Principales
 
 1. **Desarrollo de Componentes UI**
-
    - Crear componentes reutilizables y modulares
    - Implementar diseño responsive
    - Aplicar principios de atomic design
    - Mantener consistencia visual
 
 2. **Gestión de Estado**
-
    - Implementar state management (Redux/Zustand/Context)
    - Cache de datos del servidor
    - Sincronización con backend
    - Estado local de componentes
 
 3. **Integración con Backend**
-
    - Consumir APIs REST/GraphQL
    - Manejo de loading y errores
    - Optimistic updates
@@ -34,6 +31,9 @@ El Frontend Agent es responsable de crear interfaces de usuario intuitivas, resp
    - Optimización de rendering
    - Accesibilidad (a11y)
    - Progressive Web App (PWA)
+
+5. **Testing rápido**
+   - Cada cambio debe incluir lints de modo que no se rompa nada en el frontend.
 
 ---
 
@@ -65,14 +65,12 @@ Variables (project-context.md):
 ### Inputs Esperados
 
 1. **Del Architect Agent**:
-
    - Arquitectura de componentes
    - Estrategia de state management
    - Patrones de diseño UI
    - Estructura de carpetas
 
 2. **Del Backend Agent**:
-
    - Swagger/OpenAPI documentation
    - Postman collections
    - Endpoints disponibles
@@ -87,14 +85,12 @@ Variables (project-context.md):
 ### Outputs Generados
 
 1. **Componentes**
-
    - Componentes UI reutilizables
    - Páginas/Vistas
    - Layouts
    - Forms y validaciones
 
 2. **Estado y Lógica**
-
    - Store/State management
    - Custom hooks
    - API clients
@@ -312,8 +308,8 @@ export const useAuthStore = create<AuthState>()(
         token: state.token,
         user: state.user,
       }),
-    }
-  )
+    },
+  ),
 );
 ```
 
@@ -492,7 +488,7 @@ class ApiClient {
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     // Response interceptor
@@ -504,7 +500,7 @@ class ApiClient {
           window.location.href = "/login";
         }
         return Promise.reject(error);
-      }
+      },
     );
   }
 

@@ -1,6 +1,284 @@
-# Architecture Decision Records (ADRs)
+# Documentación de Arquitectura - TravesIA
 
-Este directorio contiene las decisiones arquitectónicas importantes del proyecto.
+Este directorio contiene toda la documentación arquitectónica del proyecto TravesIA, un sistema de gestión integral para agencias de turismo especializadas en circuitos por Sudamérica.
+
+---
+
+## 📚 Contenido
+
+### 1. [Plan de Arquitectura](./architecture-plan.md)
+Documento maestro que define:
+- Bounded contexts y separación de responsabilidades
+- Arquitectura de alto nivel (C4 diagrams)
+- Modelo de datos detallado
+- Especificaciones de APIs REST
+- Decisiones técnicas y patrones de diseño
+- Estrategias de seguridad, escalabilidad y performance
+- Timeline y plan de implementación
+- Handoffs a otros agentes (Database, Backend, Frontend, etc.)
+
+**Status**: ✅ Completado
+**Última actualización**: 2026-01-20
+
+---
+
+### 2. [Modelo de Datos](./data-model.md)
+Documentación detallada del modelo de datos:
+- Diagramas entidad-relación por bounded context
+- Definición de todas las entidades y sus campos
+- Índices críticos para performance
+- Constraints y validaciones
+- Volumen estimado de datos
+- Estrategias de particionamiento
+
+**Status**: ✅ Completado
+**Última actualización**: 2026-01-20
+
+---
+
+### 3. [Architecture Decision Records (ADRs)](../adr/)
+Decisiones arquitectónicas documentadas:
+- [ADR-0001: Django REST Framework](../adr/0001-django-rest-framework.md)
+- [ADR-0002: PostgreSQL Database](../adr/0002-postgresql-database.md)
+- [ADR-0003: Monolito Modular](../adr/0003-monolith-modular-architecture.md)
+
+**Ver índice completo**: [docs/adr/README.md](../adr/README.md)
+
+---
+
+## 🏗️ Stack Tecnológico
+
+| Capa | Tecnología | Versión |
+|------|------------|---------|
+| **Frontend** | Vue 3 + Quasar 2 | Latest |
+| **Backend** | Django + DRF | 5.0 |
+| **Base de Datos** | PostgreSQL | 15+ |
+| **Cache** | Redis | 7+ |
+| **Storage** | AWS S3 | - |
+| **API** | REST (OpenAPI) | v1 |
+| **Auth** | JWT + MFA | - |
+| **Deployment** | Docker Compose | - |
+
+---
+
+## 🎯 Bounded Contexts
+
+El sistema se organiza en 6 contextos principales:
+
+1. **Circuit Management**: Programas, grupos, pasajeros, itinerarios
+2. **Operations**: Transporte, alojamiento, servicios especializados
+3. **Supplier Management**: Proveedores, servicios, precios
+4. **Financial**: Costos, ventas, facturación SUNAT, comisiones
+5. **Document Management**: Repositorio digital de documentos
+6. **Analytics & Reporting**: Liquidaciones, reportes, KPIs
+
+---
+
+## 📊 Diagramas de Arquitectura
+
+### Arquitectura de Alto Nivel
+
+```
+┌─────────────┐
+│   Usuarios  │
+│   (Staff)   │
+└──────┬──────┘
+       │ HTTPS
+       ▼
+┌─────────────────────────────────────────┐
+│         Vue 3 + Quasar 2                │
+│         (Frontend SPA)                  │
+└──────────────┬──────────────────────────┘
+               │ REST API (JSON)
+               │ JWT Auth
+               ▼
+┌─────────────────────────────────────────┐
+│      Django + Django REST Framework     │
+│                                         │
+│  ┌────────┬────────┬────────┬────────┐ │
+│  │Circuits│Operations│Suppliers│Financial│ │
+│  └────────┴────────┴────────┴────────┘ │
+│  ┌────────┬────────┐                   │
+│  │Documents│Analytics│                  │
+│  └────────┴────────┘                   │
+└──────────┬──────────┬───────────────────┘
+           │          │
+           ▼          ▼
+    ┌──────────┐  ┌────────┐
+    │PostgreSQL│  │ Redis  │
+    │   (DB)   │  │(Cache) │
+    └──────────┘  └────────┘
+           │
+           ▼
+    ┌──────────┐
+    │  AWS S3  │
+    │(Documents)│
+    └──────────┘
+```
+
+---
+
+## 🔗 Integraciones Externas
+
+| Sistema | Propósito | Tipo |
+|---------|-----------|------|
+| **SUNAT** | Facturación electrónica (Perú) | SOAP/REST |
+| **AWS S3** | Almacenamiento de documentos | SDK |
+| **Email Service** | Notificaciones | SMTP/API |
+| **SMS Provider** | MFA y alertas | API |
+
+---
+
+## 🔐 Seguridad
+
+### Autenticación
+- JWT (JSON Web Tokens) con refresh tokens
+- MFA (Multi-Factor Authentication) con TOTP
+- Roles: Admin, Operations Manager, Tour Conductor, Accountant, Viewer
+
+### Encriptación
+- Datos en tránsito: TLS 1.3
+- Datos en reposo: AES-256 (campos sensibles)
+- Passwords: bcrypt/argon2
+
+### Audit Trail
+- Todos los cambios críticos registrados
+- IP tracking
+- Retention: 7 años
+
+---
+
+## ⚡ Performance
+
+### Targets
+- Response time: < 300ms (p95)
+- Page load: < 2s
+- Uptime: 99.5%
+
+### Estrategias
+- **Caching**: Redis (15min - 24h TTL según tipo de dato)
+- **DB Optimization**: Índices estratégicos, query optimization
+- **CDN**: CloudFront para assets estáticos
+- **Connection Pooling**: pgBouncer para PostgreSQL
+
+---
+
+## 📈 Escalabilidad
+
+### Fase Actual (Monolito Modular)
+- Django instance única
+- PostgreSQL single node
+- Redis single instance
+- Volumen: 50 grupos/año
+
+### Futuro (si crece a 200+ grupos/año)
+- Load balancer + múltiples Django instances
+- PostgreSQL read replicas
+- Redis cluster
+- Celery workers distribuidos
+
+---
+
+## 🧪 Testing
+
+### Cobertura Target
+- **Unit Tests**: 80%+ coverage
+- **Integration Tests**: Endpoints críticos
+- **E2E Tests**: Flujos principales
+
+### Herramientas
+- **Backend**: pytest, pytest-django
+- **Frontend**: Vitest, Cypress
+- **API**: Postman/Newman
+
+---
+
+## 📦 Deployment
+
+### Entornos
+- **Development**: Local con Docker Compose
+- **Staging**: AWS (ambiente de pruebas)
+- **Production**: AWS (ambiente productivo)
+
+### CI/CD
+- **Plataforma**: GitHub Actions
+- **Pipeline**: Test → Build → Deploy
+- **Estrategia**: Blue/Green deployment
+
+---
+
+## 📅 Timeline de Implementación
+
+| Fase | Duración | Descripción |
+|------|----------|-------------|
+| Setup | 1 semana | Infraestructura, Docker, repo |
+| Circuit Management | 2 semanas | Programs, Groups, Passengers |
+| Operations | 3 semanas | Transport, Hotels, Services |
+| Suppliers | 1 semana | Supplier management |
+| Financial | 2 semanas | Costs, Invoices, SUNAT |
+| Documents | 1 semana | S3 integration |
+| Analytics | 1 semana | Reports, KPIs |
+| Testing & QA | 1 semana | Integration, E2E tests |
+| Deployment | 1 semana | Production setup |
+| **TOTAL** | **13 semanas** | ~3 meses |
+
+---
+
+## 👥 Handoffs
+
+Este diseño arquitectónico está listo para ser implementado por los siguientes agentes:
+
+### → Database Agent
+- Crear esquema PostgreSQL
+- Configurar Redis
+- Implementar migraciones
+- Documentar estrategia de backup
+
+### → Backend Agent
+- Implementar Django apps
+- Crear API REST endpoints
+- Integrar con SUNAT
+- Configurar Celery
+
+### → Frontend Agent
+- Setup Quasar 2
+- Implementar componentes
+- State management (Pinia)
+- Integración con API
+
+### → DevOps Agent
+- Docker Compose setup
+- CI/CD pipeline
+- AWS infrastructure
+- Monitoreo y logging
+
+### → Security Agent
+- JWT + MFA implementation
+- Encriptación de datos sensibles
+- Audit trail
+- Security testing
+
+### → Testing Agent
+- Unit tests
+- Integration tests
+- E2E tests
+- Performance testing
+
+---
+
+## 📖 Referencias
+
+- **Instrucciones Globales**: [.github/copilot-instructions.md](../../.github/copilot-instructions.md)
+- **Contexto del Proyecto**: [project-context.md](../../project-context.md)
+- **Requisitos**: [informacion.md](../../informacion.md)
+- **ADRs**: [docs/adr/](../adr/)
+
+---
+
+**Versión**: 1.0
+**Última Actualización**: 2026-01-20
+**Mantenedor**: Architect Agent
+**Status**: ✅ Ready for Implementation
 
 ## ¿Qué es un ADR?
 
